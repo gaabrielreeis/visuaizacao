@@ -2,7 +2,7 @@
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
-
+from PIL import Image
 import plotly.express as px
 
 st.set_page_config(layout="wide")
@@ -10,9 +10,11 @@ st.set_page_config(layout="wide")
 # Functions for each of the pages
 def home(uploaded_file):
     if uploaded_file:
-        st.header('Begin exploring the data using the menu on the left')
+        st.text('Explore com o menu à esquerda')
     else:
-        st.header('To begin please upload a file')
+        st.text('Para começar, carregue os datasets')
+    image = Image.open('messi.jpg')
+    st.image(image, caption='Lionel Messi comemora gol da vitória em Madri.')
 
 def data_summary():
     st.header('Statistics of Dataframe')
@@ -33,20 +35,22 @@ def interactive_plot():
     st.plotly_chart(plot, use_container_width=True)
 
 # Add a title and intro text
-st.title('Earthquake Data Explorer')
-st.text('This is a web app to allow exploration of Earthquake Data')
+st.title('Lionel Messi')
 
 # Sidebar setup
-st.sidebar.title('Sidebar')
-upload_file = st.sidebar.file_uploader('Upload a file containing earthquake data')
+upload_file = st.button('Load Datasets')
+# upload_file = st.sidebar.file_uploader('Upload a file containing earthquake data')
 #Sidebar navigation
-st.sidebar.title('Navigation')
-options = st.sidebar.radio('Select what you want to display:', ['Home', 'Data Summary', 'Data Header', 'Interactive Plots'])
+st.sidebar.title('Sumário de Dados')
+options = st.sidebar.radio('Selecione o que deseja ver:', ['Home', 'Data Summary', 'Data Header', 'Interactive Plots'])
 
 # Check if file has been uploaded
 if upload_file is not None:
-    df = pd.read_csv(upload_file)
+    df = pd.read_csv('barca.csv',encoding= 'unicode_escape')
     st.session_state['df'] = df
+    df_hm = pd.read_csv('messi_heatmap.csv')
+    st.session_state['messi_heatmap'] = df_hm
+
 
 # Navigation options
 if options == 'Home':
